@@ -1,0 +1,8 @@
+# Fluid Attacks SAST - Paso 2: modo informativo (solo escanear)
+# Sin strict -> no rompe el build. Sin bloque "output" -> el reporte
+# solo se muestra en el log del job (no se exporta a CSV).
+language: ES
+strict: false
+sast:
+  include:
+    - .

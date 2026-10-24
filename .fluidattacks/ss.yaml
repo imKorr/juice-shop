@@ -1,0 +1,6 @@
+# Fluid Attacks Secret Scan - Paso 2: modo informativo (solo escanear)
+language: ES
+strict: false
+ss:
+  include:
+    - .

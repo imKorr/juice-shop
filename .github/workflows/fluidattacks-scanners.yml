@@ -1,0 +1,54 @@
+# Taller Fluid Attacks - SAST, SCA y Secret Scan en GitHub Actions
+# Paso 2: modo informativo. Solo escanea: no exporta CSV y no rompe el build.
+name: Fluid Attacks scanners
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sast:
+    name: SAST
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fluid Attacks SAST
+        id: scan
+        uses: fluidattacks/sast-action@1.3.0
+        with:
+          scan_config_path: .fluidattacks/sast.yaml
+          scanner_mode: full
+
+  sca:
+    name: SCA
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fluid Attacks SCA
+        id: scan
+        uses: fluidattacks/sca-action@1.2.0
+        with:
+          scan_config_path: .fluidattacks/sca.yaml
+          scanner_mode: full
+
+  secret-scan:
+    name: Secret Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fluid Attacks Secret Scan
+        id: scan
+        uses: fluidattacks/ss-action@0.3.0
+        with:
+          scan_config_path: .fluidattacks/ss.yaml
+          scanner_mode: full

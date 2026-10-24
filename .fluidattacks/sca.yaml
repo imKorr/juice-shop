@@ -1,0 +1,6 @@
+# Fluid Attacks SCA - Paso 2: modo informativo (solo escanear)
+language: ES
+strict: false
+sca:
+  include:
+    - .
