@@ -1,8 +1,11 @@
-# Fluid Attacks SAST - Paso 2: modo informativo (solo escanear)
-# Sin strict -> no rompe el build. Sin bloque "output" -> el reporte
-# solo se muestra en el log del job (no se exporta a CSV).
+# Fluid Attacks SAST - Paso 3: exporta a CSV y rompe el build (modo estricto)
+# strict: true -> el escaner termina con codigo 1 ante CUALQUIER hallazgo,
+# sin importar su severidad.
 language: ES
-strict: false
+strict: true
+output:
+  file_path: fluidattacks-sast-results.csv
+  format: CSV
 sast:
   include:
     - .

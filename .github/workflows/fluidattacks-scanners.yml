@@ -1,5 +1,9 @@
 # Taller Fluid Attacks - SAST, SCA y Secret Scan en GitHub Actions
-# Paso 2: modo informativo. Solo escanea: no exporta CSV y no rompe el build.
+# Paso 3: exporta resultados a CSV (artefacto del run) y rompe el build en
+# modo estricto (strict: true en .fluidattacks/*.yaml).
+# La action termina en verde aunque el escaner salga con codigo 1 y lo expone
+# en la salida vulnerabilities_found; el paso "Romper el build" convierte esa
+# salida en un fallo del job.
 name: Fluid Attacks scanners
 
 on:
@@ -24,6 +28,18 @@ jobs:
         with:
           scan_config_path: .fluidattacks/sast.yaml
           scanner_mode: full
+      - name: Exportar CSV
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fluidattacks-sast-results-csv
+          path: fluidattacks-sast-results.csv
+          if-no-files-found: warn
+      - name: Romper el build
+        if: steps.scan.outputs.vulnerabilities_found == 'true'
+        run: |
+          echo "::error::Fluid Attacks SAST encontro vulnerabilidades que rompen el build (ver CSV)"
+          exit 1
 
   sca:
     name: SCA
@@ -38,6 +54,18 @@ jobs:
         with:
           scan_config_path: .fluidattacks/sca.yaml
           scanner_mode: full
+      - name: Exportar CSV
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fluidattacks-sca-results-csv
+          path: fluidattacks-sca-results.csv
+          if-no-files-found: warn
+      - name: Romper el build
+        if: steps.scan.outputs.vulnerabilities_found == 'true'
+        run: |
+          echo "::error::Fluid Attacks SCA encontro vulnerabilidades que rompen el build (ver CSV)"
+          exit 1
 
   secret-scan:
     name: Secret Scan
@@ -52,3 +80,15 @@ jobs:
         with:
           scan_config_path: .fluidattacks/ss.yaml
           scanner_mode: full
+      - name: Exportar CSV
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fluidattacks-ss-results-csv
+          path: fluidattacks-ss-results.csv
+          if-no-files-found: warn
+      - name: Romper el build
+        if: steps.scan.outputs.vulnerabilities_found == 'true'
+        run: |
+          echo "::error::Fluid Attacks Secret Scan encontro vulnerabilidades que rompen el build (ver CSV)"
+          exit 1
