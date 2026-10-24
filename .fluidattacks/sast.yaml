@@ -1,8 +1,10 @@
-# Fluid Attacks SAST - Paso 3: exporta a CSV y rompe el build (modo estricto)
-# strict: true -> el escaner termina con codigo 1 ante CUALQUIER hallazgo,
-# sin importar su severidad.
+# Fluid Attacks SAST - Paso 4: exporta a CSV y rompe el build solo por umbral
+# strict: false + strictness_threshold: high -> el escaner termina con
+# codigo 1 solo si hay hallazgos de severidad high o critical; los de
+# severidad low/medium se reportan en el CSV pero no rompen el build.
 language: ES
-strict: true
+strict: false
+strictness_threshold: high
 output:
   file_path: fluidattacks-sast-results.csv
   format: CSV

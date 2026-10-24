@@ -1,9 +1,8 @@
 # Taller Fluid Attacks - SAST, SCA y Secret Scan en GitHub Actions
-# Paso 3: exporta resultados a CSV (artefacto del run) y rompe el build en
-# modo estricto (strict: true en .fluidattacks/*.yaml).
-# La action termina en verde aunque el escaner salga con codigo 1 y lo expone
-# en la salida vulnerabilities_found; el paso "Romper el build" convierte esa
-# salida en un fallo del job.
+# Paso 4: exporta resultados a CSV (artefacto del run) y rompe el build solo
+# cuando hay hallazgos con severidad >= strictness_threshold (high) definida
+# en .fluidattacks/*.yaml. El escaner sale con codigo 1 solo en ese caso, lo
+# que la action expone en vulnerabilities_found.
 name: Fluid Attacks scanners
 
 on:
